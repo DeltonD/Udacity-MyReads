@@ -9,22 +9,22 @@ class SearchBooks extends React.Component{
   }
 
   handleChange = (e) =>{
-    if(e.target.value !== ''){
       BooksAPI.search(e.target.value).then(
         results =>{
-          for (var rbook of results) {
-            for (var pbook of this.props.books) {
-              if (rbook.id === pbook.id) {
-                rbook.shelf = pbook.shelf
+          if(results && !results.error){
+            for (var rbook of results) {
+              for (var pbook of this.props.books) {
+                if (rbook.id === pbook.id) {
+                  rbook.shelf = pbook.shelf
+                }
               }
             }
+              this.setState({results: results})
+          }else{
+            this.setState({results: []})
           }
-          this.setState({results: results})
         }
       )
-    }else{
-      this.setState({results: []})
-    }
     this.setState({query: e.target.value})
   }
 
